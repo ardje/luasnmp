@@ -609,7 +609,7 @@ local function oidlen(oid)
   oid = isoid(oid)
   if not oid then return FAIL("snmp: not an OID") end
   local n = 0
-  string.gsub(oid, "%.", function(v) 
+  string.gsub(oid, "%.", function(_) 
 			   n = n + 1 
 			 end)
   return n + 1
