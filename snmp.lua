@@ -883,7 +883,7 @@ end
 -- @return none.
 ---------------------------------------------------------------------------
 function __trap(session, msg)
-   local host, src, vbs, sip, dip, sport, dport, uptimeName, uptimeVal, vbs, ip, port
+   local host, vbs, sip, dip, sport, uptimeName, uptimeVal, ip , port, _proto_, _dport_
    -- debugging: uncomment if desired
    --print(string.format("  session.name=%s", session.name))
    --print(string.format("  generic_trap(): msg = %q", msg))
@@ -896,7 +896,7 @@ function __trap(session, msg)
       string.gsub(msg, 
 		  "^%s*([%w%.]+)%s+(%w+):%s*%[[%d%.]+%]%-%>%[([%d%.]+)%]:(%d+)%s+([^%s]+)%s+([^%s]+)%s+(.*)",
 		  function(...) 
-		     host, proto, ip, port, uptimeName, uptimeVal, vbs = select(1, ...) 
+		     host, _proto_, ip, port, uptimeName, uptimeVal, vbs = select(1, ...) 
 		  end)
       -- debugging:
       -- print(string.format("  host=%q, proto=%q, ip=%q, port=%q, uptimeName=%q, uptimeVal=%q, vbs=%q",
@@ -908,7 +908,7 @@ function __trap(session, msg)
 		  -- iso.3.6.1.2.1.1.3.0 0:2:11:01.53 iso.3.6.1.6.3.1.1.4.1.0 ccitt.0 iso.3.6.1.2.1.1.5.0 \"hello\""		  
 		  "^%s*([%w%.]+)%s+(%w+):%s*%[([%d%.]+)%]:([%d]+)%-%>%[([%d%.]+)%]:([%-%d]+)%s+([^%s]+)%s+([^%s]+)%s+(.*)",
 		  function(...) 
-		     host, proto, sip, sport, dip, dport, uptimeName, uptimeVal, vbs = select(1, ...) 
+		     host, _proto_, sip, sport, dip, _dport_, uptimeName, uptimeVal, vbs = select(1, ...) 
                      ip = sip
                      port = sport
 		     -- debugging:
@@ -922,7 +922,6 @@ function __trap(session, msg)
 		  function(...)
 		     local arg = {select(1, ...)}
 		     host = arg[1]
-		     src = arg[2]
 		     uptimeName = arg[3]
 		     uptimeVal = uptimeS2V(arg[4])
 		     vbs = arg[5]
