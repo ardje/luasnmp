@@ -3032,8 +3032,8 @@ LUALIB_API int luaopen_snmp_core(lua_State *L) {
 #if LUA_VERSION_NUM > 501
   lua_newtable(L);                     /* mtab */
   luaL_setfuncs(L, funcs, 0); 
-  lua_pushvalue(L, -1);                /* mtab, mtab */
-  lua_setglobal(L, MYNAME);            /* mtab */
+  // lua_pushvalue(L, -1);                /* mtab, mtab */
+  // lua_setglobal(L, MYNAME);            /* mtab */
 #else
   luaL_register(L, MYNAME, funcs);     /* mtab */
 #endif
