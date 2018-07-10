@@ -705,7 +705,7 @@ end
 ------------------------------------------------------------------------------
 local function load(fname)
   if string.sub(fname, 1, 1) == "/" then
-    local tree, err = mib._load(fname)
+    local tree = mib._load(fname)
     if tree then return tree end 
   else 
     local configdirs = string.gsub(config.mibdirs or "", "(%+*)(.+)", "%2")
@@ -716,7 +716,7 @@ local function load(fname)
 	local f = io.open(fn,"r")
 	if f then 
 	  f:close() 
-	  local tree, err = mib._load(fn)
+	  local tree = mib._load(fn)
 	  if tree then return tree end
 	end
       end
