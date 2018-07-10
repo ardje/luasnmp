@@ -834,10 +834,10 @@ end
 -- @param s string - Formatted string.
 -- @return Varbind.
 ---------------------------------------------------------------------------
-function uptimeS2V(s)
+function uptimeS2V(stime)
   local ticks = nil
-  if type(s) ~= "string" then return FAIL(BADARG) end
-  string.gsub(s, "(%d+):(%d+):(%d+):(%d+)%.(%d+)$",
+  if type(stime) ~= "string" then return FAIL(BADARG) end
+  string.gsub(stime, "(%d+):(%d+):(%d+):(%d+)%.(%d+)$",
  	      function(d, h, m, s, ds)
 		ticks = {
 		  days = tonumber(d) or 0,
