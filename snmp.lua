@@ -624,7 +624,7 @@ end
 ------------------------------------------------------------------------------
 local function oidbase(oid, len)
   local err
-  local len = len or oidlen(oid)
+  len = len or oidlen(oid)
   oid, err = isoid(oid)
   if not oid then return nil, err end
   local rv = ""
