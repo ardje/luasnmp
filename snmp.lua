@@ -809,7 +809,7 @@ end
 ---------------------------------------------------------------------------
 function getkeys(t)
   local rv = {}
-  for k,v in pairs(t) do
+  for k,_ in pairs(t) do
     table.insert(rv, k)
   end
   table.sort(rv)
