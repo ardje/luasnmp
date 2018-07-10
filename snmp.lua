@@ -92,7 +92,7 @@ local function read_config()
     local f = io.open(fname, "r") 
     if f then 
       for line in f:lines() do
-	local tok, val = string.gsub(line, "^%s*(#*)%s*(%w+)%s+([^%s#]*)",
+	string.gsub(line, "^%s*(#*)%s*(%w+)%s+([^%s#]*)",
 			       function(comment1, tok, val)
 				 if comment1 ~= "#" then
 -- Uncomment to see which token read from which file.
