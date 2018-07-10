@@ -1053,7 +1053,7 @@ mib.stringoid = stringoid
 ---------------------------------------------------------------------------
 function instance(...)
   local oid = ""
-  arg = {select(1, ...)}
+  local arg = {select(1, ...)}
   for k,v in ipairs(arg) do
     if type(v) == "number" then
       oid = oid .. string.format(".%d", v)
@@ -1155,10 +1155,11 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
   if not newKul then return nil, newKulLen end
 
   -- transformations
+  local oldKulPriv, newKulPriv
   if dopriv then
-    if session.privType == "DES" or session.privType == "AES" then
+    --[[ if session.privType == "DES" or session.privType == "AES" then
       oldKulPrivLen, newKulPrivLen = 16, 16
-    end
+    end -- ]]
     oldKulPriv = oldKul
     newKulPriv = newKul
   end
@@ -1194,8 +1195,10 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
  				    string.len(user), key2oid(user)),
 		      key2octet(keychgpriv, keychgprivlen),
 		      snmp.TYPE_OCTETSTR)
+    table.insert(vl, vb)
   end
   -- set request
+  local err, errindex
   vl, err, errindex = session:set(vl)
   if err then
     if errindex then 
