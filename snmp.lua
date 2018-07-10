@@ -976,7 +976,7 @@ end
 function sprintkeyx(key, len)
   local s = "0x"
   local slen = string.len(key)
-  local len = len or slen
+  len = len or slen
   if len > slen then len = slen end
   for i = 1, len do
     s = s..string.format("%02X", string.byte(key, i))
@@ -993,7 +993,7 @@ end
 function sprintkeyd(key, len)
   local s = ""
   local slen = string.len(key)
-  local len = len or slen
+  len = len or slen
   if len > slen then len = slen end
   for i = 1, len do
     s = s..string.format("%d", string.byte(key,i))
@@ -1011,7 +1011,7 @@ end
 ---------------------------------------------------------------------------
 function sprintkey(key, len)
   local slen = string.len(key)
-  local len = len or slen
+  len = len or slen
   local s = ""
   if len > slen then len = slen end
   for i = 1, len do
