@@ -143,7 +143,7 @@ __vbindmetatable = {
 ------------------------------------------------------------------------------
 -- Init general things and config tokens
 ------------------------------------------------------------------------------
-assert(not init(tokens, function(token, line)
+assert(not init(tokens, function(token, line) -- luacheck: ignore 212
 			end))
 
 ------------------------------------------------------------------------------
@@ -606,7 +606,7 @@ end
 -- @return OID string, if o.k. Nil otherwise.
 ------------------------------------------------------------------------------
 local function oidlen(oid)
-  local oid, err = isoid(oid)
+  oid = isoid(oid)
   if not oid then return FAIL("snmp: not an OID") end
   local n = 0
   string.gsub(oid, "%.", function(v) 
