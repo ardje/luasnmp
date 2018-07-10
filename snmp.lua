@@ -745,29 +745,31 @@ sprinterr = sprint_error
 -- @return Varbind list with values.
 ---------------------------------------------------------------------------
 function walk(sess, var)
-  local oid
   local running = true
   local t = {}
-  local root, vb, err
+  local root, err, vb
 --  if not sess then return nil, errtb[BADSESSION] end
   if not sess then return FAIL(BADSESSION) end
-  local var = var or "mib-2"
-  if type(var) == "table" then
-    oid = mib.oid(var.oid)
-  elseif type(var) == "string" then
-    oid = mib.oid(var)
-  else 
-    return FAIL(BADARG, "var")
+  var = var or "mib-2"
+  do
+    local oid
+    if type(var) == "table" then
+      oid = mib.oid(var.oid)
+    elseif type(var) == "string" then
+      oid = mib.oid(var)
+    else 
+      return FAIL(BADARG, "var")
+    end
+    if not oid then return nil, errtb[BADOID] end
+    root = {oid = oid}
   end
-  if not oid then return nil, errtb[BADOID] end
-  root = {oid = oid}
   if sess.includeroot then
     vb, err = sess:get(root)
     if err then return nil, err end
     table.insert(t,vb)
   end
   local rootlen = oidlen(root.oid)
-  local vb = root
+  vb = root
   local rootoid = root.oid
   local last = rootoid
   while running do
@@ -775,7 +777,7 @@ function walk(sess, var)
     if not vb then return nil, err end
     if err then
       if err == NOSUCHNAME or string.find(err, "no such name") then
-	running = false
+	-- running = false
 	return t, nil
       else
 	return t, err 
