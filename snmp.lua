@@ -1399,8 +1399,8 @@ function createsectogroup(session, secmodel, secname, groupname)
     newvar(vacmOid.groupName..instance(secmodel, secname),
 	   groupname)
   -- set request
-  local vl, err, errindex = session:set(vl)
-  return retvarlist(vl, err, errindex)
+  local svl, err, errindex = session:set(vl)
+  return retvarlist(svl, err, errindex)
 end
 
 
@@ -1436,7 +1436,7 @@ end
 -- @return varlist or nil + erromessage on failure
 ------------------------------------------------------------------------------
 function createview(session, viewname, subtree, mask, flag)
-  local err, included
+  local included
   if type(viewname) ~= "string" then return 
     nil, errtb[BADARG].." (viewname)" 
   end
@@ -1466,8 +1466,8 @@ function createview(session, viewname, subtree, mask, flag)
 	   included)
 
   -- set request
-  local vl, err, errindex = session:set(vl)
-  return retvarlist(vl, err, errindex)
+  local svl, err, errindex = session:set(vl)
+  return retvarlist(svl, err, errindex)
 end
 
 ------------------------------------------------------------
@@ -1484,8 +1484,8 @@ function deleteview(session, viewname, subtree)
   local vb = newvar(vacmOid.viewTreeFamilyStatus .. instance(viewname, subtree),
 		    rowStatus.destroy)
   -- set request
-  local vb, err = session:set(vb)
-  return vb, err
+  local svb, err = session:set(vb)
+  return svb, err
 end
 
 ------------------------------------------------------------------------------
@@ -1522,8 +1522,8 @@ function createaccess(session, group, secmodel, seclevel, match,
     newvar(vacmOid.accessNotifyViewName .. inst, key2octet(notifyview))
 
   -- set request
-  local vl, err, errindex = session:set(vl)
-  return retvarlist(vl, err, errindex)
+  local svl, err, errindex = session:set(vl)
+  return retvarlist(svl, err, errindex)
 end
 
 ------------------------------------------------------------------------------
@@ -1547,8 +1547,8 @@ function deleteaccess(session, group, secmodel, seclevel, context)
   local vb = newvar(vacmOid.accessStatus .. inst, rowStatus.destroy)
 
   -- set request
-  local vb, err = session:set(vb)
-  return vb, err
+  local svb, err = session:set(vb)
+  return svb, err
 end
 
 ------------------------------------------------------------------------------
@@ -1581,7 +1581,7 @@ function __clone(parent, config)
       end
     end
   end
-  for k, v in pairs(config or {}) do
+  for k, _ in pairs(config or {}) do
     new[k] = config[k]
   end
   return open(new)
@@ -1868,8 +1868,8 @@ function open (session)
   session.inform = inform
   session.asynch_inform = asynch_inform
   session.walk = walk
-  session.newvar = function(session, name, value, type) 
-		     return newvar(name, value, type, session) 
+  session.newvar = function(sess, name, value, type) 
+		     return newvar(name, value, type, sess) 
 		   end
 --  session.clone = clone
   session.newpassword = newpassword
