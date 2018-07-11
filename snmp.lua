@@ -1220,8 +1220,6 @@ end
 -- @return Varlist or nil + errormessage
 ------------------------------------------------------------------------------
 function createuser(session, user, clonefrom, engineID)
-  local err
-
   if type(user) ~= "string" then return FAIL(BADARG, "user") end
 
   -- Engine ID to use
@@ -1229,7 +1227,7 @@ function createuser(session, user, clonefrom, engineID)
     local t = session:details()
     if t.contextEngineIDLen == 0 then
       -- we need an engineID and don't have one: probe with empty get-request
-      local vb, err = session:get(nil)
+      local vb = session:get(nil)
       if not vb then return FAIL(BADENGPROBE) end
     end
     t = session:details()
@@ -1262,8 +1260,8 @@ function createuser(session, user, clonefrom, engineID)
 			      string.len(engineID), key2oid(engineID),
 			      string.len(clonefrom), key2oid(clonefrom)))
     table.insert(vl, vb)
-
-    local vl, err, errindex = session:set(vl)
+    local err, errindex
+    vl, err, errindex = session:set(vl)
     if err then
       if errindex then
 	return FAIL(err, "index " .. tostring(errindex))
@@ -1275,6 +1273,7 @@ function createuser(session, user, clonefrom, engineID)
     end
   else
     -- create
+    local err
     local vb = newvar(string.format("%s.%d.%s.%d.%s",
 				    usmOid.userStatus,
 				    string.len(engineID), key2oid(engineID),
@@ -1294,8 +1293,6 @@ end
 -- @return Varlist or nil + errormessage
 ------------------------------------------------------------------------------
 function clonefromuser(session, user, clonefrom, engineID)
-  local err
-
   -- sanity checks
   if type(clonefrom) ~= "string" then return FAIL(BADARG, "clonefrom") end
   if type(user) ~= "string" then return FAIL(BADARG, "user") end
@@ -1305,7 +1302,7 @@ function clonefromuser(session, user, clonefrom, engineID)
     local t = session:details()
     if t.contextEngineIDLen == 0 then
       -- we need an engineID and don't have one: probe with empty get-request
-      local vb, err = session:get(nil)
+      local vb = session:get(nil)
       if not vb then return FAIL(BADENGPROBE) end
     end
     t = session:details()
@@ -1334,7 +1331,8 @@ function clonefromuser(session, user, clonefrom, engineID)
   table.insert(vl, vb)
 
   -- set request
-  local vl, err, errindex = session:set(vl)
+  local err,errindex
+  vl, err, errindex = session:set(vl)
   if err then
     if errindex then 
       return FAIL(err,"index " .. tostring(errindex))
@@ -1362,7 +1360,7 @@ function deleteuser(session, user, engineID)
     local t = session:details()
     if t.contextEngineIDLen == 0 then
       -- we need an engineID and don't have one: probe with empty get-request
-      local vb, err = session:get(nil)
+      local vb = session:get(nil)
       if not vb then return FAIL(BADENGPROBE) end
     end
     t = session:details()
@@ -1375,6 +1373,7 @@ function deleteuser(session, user, engineID)
 				  string.len(engineID), key2oid(engineID),
 				  string.len(user), key2oid(user)),
 		    rowStatus.destroy)
+  local err
   vb, err = session:set(vb)
   return vb, err
 end
