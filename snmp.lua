@@ -1917,7 +1917,7 @@ function open (session)
 				local name = string.gsub(key, "_",".")
 				-- Value is a table. Set all values - recursive.
 				if type(value) == "table" then
-				  for k,v in pairs(v) do
+				  for k,v in pairs(value) do
 				    self[k] = v
 				  end
 				else
@@ -1928,7 +1928,7 @@ function open (session)
 				local name = string.gsub(key, "_",".")
 				-- Value is a table. Set all values - recursive.
 				if type(value) == "table" then
-				  for k,v in pairs(v) do
+				  for k,v in pairs(value) do
 				    self[k] = v
 				  end
 				end
@@ -1942,7 +1942,7 @@ function open (session)
 				  -- no entry found: construct a new varbinding and
 				  -- put it into the cache.
 				  local oid = mib.oid(name)
-				  local entry = {oid=oid, type=mib.type(oid), value=value}
+				  entry = {oid=oid, type=mib.type(oid), value=value}
 				  self.cache[name] = entry
 				  return try(self:set(entry))
 				end
